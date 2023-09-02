@@ -3,7 +3,6 @@ import numpy as np
 import nltk
 import re
 import ssl
-import csv
 import string
 
 def remove_punctuation(input_string):
