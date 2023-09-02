@@ -53,7 +53,7 @@ for link in url:
     content = ""
     for para in paras:
         content = content + para.text + " "
-    content = content.strip()
+    content = content[:-1]
     full_text.append(content)
 
 data = {"Category": category,
