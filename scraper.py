@@ -52,8 +52,8 @@ for link in url:
 
     content = ""
     for para in paras:
-        content = content + para.text
-
+        content = content + para.text + " "
+    content = content.strip()
     full_text.append(content)
 
 data = {"Category": category,
@@ -63,4 +63,4 @@ data = {"Category": category,
         "Full Text": full_text}
 
 df = pd.DataFrame(data)
-df.to_csv('News.csv', index=False)
+df.to_csv('news.csv', index=False)
