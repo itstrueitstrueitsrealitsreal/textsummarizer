@@ -11,7 +11,9 @@ category = []
 url = []
 title = []
 summary = []
+full_text = []
 
+# iterate through 50 pages
 for i in range(50):
     # get url for page
     URL = "https://www.newsweek.com/newsfeed?page=" + str(i + 1)
@@ -21,6 +23,7 @@ for i in range(50):
     soup = bs4.BeautifulSoup(r.content, "lxml")
 
     articles = soup.find_all("article")
+    # iterate through 30 articles on a single page, isolating their content
     for article in articles:
         # obtaining category
         categoryTag = article.find("div", class_ = "category")
@@ -38,12 +41,26 @@ for i in range(50):
         # obtaining summary
         summary.append(article.find("div", class_ = "summary").get_text())
 
+# iterate through list of urls to obtain content of articles
+for link in url:
+    r = requests.get(url = link, headers = headers)
+    soup = bs4.BeautifulSoup(r.content, "lxml")
+
+    body = soup.find("div", class_ = "article-body")
+
+    paras = body.find_all("p")
+
+    content = ""
+    for para in paras:
+        content = content + para.text
+
+    full_text.append(content)
 
 data = {"Category": category,
         "URL": url,
         "Title": title,
-        "Summary": summary}
+        "Summary": summary,
+        "Full Text": full_text}
 
 df = pd.DataFrame(data)
 df.to_csv('News.csv', index=False)
-print(df)
