@@ -20,7 +20,7 @@ pegasus_rouge_L = []
 for i in range(len(summary)):
     # summary vs extracted summary
     scorer = rouge_scorer.RougeScorer(['rouge1', 'rouge2', 'rougeL'], use_stemmer=True)
-    scores = scorer.score(summary[0], extracted_summary[0])
+    scores = scorer.score(summary[i], extracted_summary[i])
 
     extract_rouge_1.append(scores.get("rouge1").fmeasure)
     extract_rouge_2.append(scores.get("rouge2").fmeasure)
@@ -42,18 +42,29 @@ df["pegasus_rouge_1"] = pegasus_rouge_1
 df["pegasus_rouge_2"] = pegasus_rouge_2
 df["pegasus_rouge_L"] = pegasus_rouge_L
 
+# # filtering and analysis of similarity between summaries
 # filtered = df.copy()
 
-# filtered = filtered.iloc[:, 7:]
-# filtered = filtered[(filtered.extract_rouge_1 > 0.6) 
-#                     & (filtered.extract_rouge_2 > 0.6) 
-#                     & (filtered.extract_rouge_L > 0.6) 
-#                     & (filtered.pegasus_rouge_1 > 0.6)
-#                     & (filtered.pegasus_rouge_2 > 0.6)
-#                     & (filtered.pegasus_rouge_L > 0.6)]
-# print(filtered)
-# df.filter()
+# # extractive summary
+# filtered_extractive = filtered[(filtered["extract_rouge_1"] > 0.6) 
+#                                & (filtered["extract_rouge_2"] > 0.6) 
+#                                & (filtered["extract_rouge_L"] > 0.6)]
 
-print(df)
+# print(filtered_extractive["Summary"].tolist()[0])
+# print(filtered_extractive["Extracted Summary"].tolist()[0])
+
+# # abstractive summary
+# filtered_abstractive = filtered[(filtered["pegasus_rouge_1"] > 0.6)
+#                                 & (filtered["pegasus_rouge_2"] > 0.6)
+#                                 & (filtered["pegasus_rouge_L"] > 0.6)]
+
+# print(filtered_abstractive["Summary"].tolist()[0])
+# print(filtered_abstractive["PEGASUS Summary"].tolist()[0])
+
+# plotting histograms for rouge-1 scores for extractive and abstractive summary
+# extractive summary
+
+
+
 
 df.to_csv("news.csv", index = False)
